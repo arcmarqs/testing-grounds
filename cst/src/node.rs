@@ -4,18 +4,21 @@ use std::collections::HashSet;
 use std::ops::Add;
 use crate::log::Log;
 
+#[derive(Debug)]
 pub enum NodeState {
     Idle,
     Running,
     Recovery
 }
 
+#[derive(Debug)]
 pub enum Operation {
     Read(String),
     Insert(String),
     Remove(String),
 }
 
+#[derive(Debug)]
 pub struct Node {
     state: NodeState,
     id: u32,
@@ -36,7 +39,7 @@ impl Node {
         }
     }
 
-    fn process_operation(&mut self,op: Operation) -> bool {
+    pub fn process_operation(&mut self,op: Operation) -> bool {
         let successful_op: bool;
 
         //Im only logging operations that change the state of the database
@@ -55,13 +58,22 @@ impl Node {
         match successful_op {
             true => {
                 self.sequence_number += 1;
-                self.log.log_operation(self.sequence_number,op)
+                self.log.log_operation(self.sequence_number,op);
+                true
 
             }
             false =>  {
                 false
             }
         }
+    }
+
+    pub fn print_data(&self) {
+        println!("{:?}",self.data);
+    }
+
+    pub fn print_log(&self) {
+        self.log.print_log();
     }
     
 }
