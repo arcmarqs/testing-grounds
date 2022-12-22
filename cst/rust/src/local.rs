@@ -225,11 +225,11 @@ fn run_single_server() {
 
         let mut replica = rt::block_on(async move {
             println!("Bootstrapping replica #{}", u32::from(id));
-            let mut replica = fut.await.unwrap();
+            let replica = fut.await.unwrap();
             println!("Running replica #{}", u32::from(id));
             replica
         });
-
+        
         replica.run().unwrap();
     //We will only launch a single OS monitoring thread since all replicas also run on the same system
    // crate::os_statistics::start_statistics_thread(NodeId(0));
@@ -383,7 +383,7 @@ fn run_client(mut client: Client<CalcData>, q: Arc<AsyncSender<String>>) {
 
     let id = u32::from(client.id());
 
-    for i in 0..2048 {
+    for i in 0..4096 {
         let mut rng = prng::State::new();
         let request = {
             let i = rng.next_state();
