@@ -1,7 +1,7 @@
 use std::fs::File;
 use std::io::{BufRead, BufReader, Read};
 use std::iter;
-use std::sync::{Arc, Weak};
+use std::sync::{Arc};
 
 use febft::bft::executable::Service;
 use intmap::IntMap;

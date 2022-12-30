@@ -132,7 +132,7 @@ fn main_() {
         pending_threads.push(std::thread::spawn(move || {
             let mut replica = rt::block_on(async move {
                 println!("Bootstrapping replica #{}", u32::from(id));
-                let mut replica = fut.await.unwrap();
+                let replica = fut.await.unwrap();
                 println!("Running replica #{}", u32::from(id));
                 replica
             });
@@ -261,7 +261,7 @@ async fn client_async_main() {
 
 
     for client in &clients_config {
-        let id = NodeId::from(client.id);
+        let _id = NodeId::from(client.id);
 
         if client.id < first_cli {
             first_cli = client.id;
@@ -375,15 +375,14 @@ fn sk_stream() -> impl Iterator<Item=KeyPair> {
     })
 }
 
-fn run_client(mut client: Client<CalcData>, q: Arc<AsyncSender<String>>) {
+fn run_client(mut client: Client<CalcData>, _q: Arc<AsyncSender<String>>) {
 
-    let request = Arc::new(Action::MultiplyByTwo);
 
     println!("Warm up...");
 
-    let id = u32::from(client.id());
+    let _id = u32::from(client.id());
 
-    for i in 0..4096 {
+    for _ in 0..4096 {
         let mut rng = prng::State::new();
         let request = {
             let i = rng.next_state();
