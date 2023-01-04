@@ -51,7 +51,7 @@ impl SharedData for CalcData {
         let mut root = capnp::message::Builder::new(capnp::message::HeapAllocator::new());
 
         let mut rq_msg: messages_capnp::request::Builder = root.init_root();
-        
+    
         rq_msg.set_data(request.ref_to_request());
 
         capnp::serialize::write_message(w, &root)
@@ -80,7 +80,6 @@ impl SharedData for CalcData {
         let mut root = capnp::message::Builder::new(capnp::message::HeapAllocator::new());
 
         let mut rq_msg: messages_capnp::reply::Builder = root.init_root();
-
         rq_msg.set_data(**reply);
       
         capnp::serialize::write_message(w, &root)

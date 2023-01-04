@@ -618,6 +618,8 @@ dependencies = [
  "async-std",
  "async-tls",
  "blake3",
+ "capnp",
+ "capnpc",
  "chrono",
  "crossbeam-channel",
  "dashmap",

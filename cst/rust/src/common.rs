@@ -563,8 +563,6 @@ impl Service for CalcService {
             Action::NoOp => println!("NoOp"),
             }
         
-        let id = u32::from(self.0);
-        println!("{:08}: state on replica #{}: {:?}", self.1, id, *state);
         self.1 += 1;
         let reply = Arc::new(*state);
 
