@@ -1,5 +1,5 @@
 use std::fs::File;
-use std::io::Write;
+use std::io::{Write, self};
 use std::sync::Arc;
 use std::time::Duration;
 
@@ -381,9 +381,9 @@ fn run_client(mut client: Client<CalcData>, _q: Arc<AsyncSender<String>>) {
     println!("Warm up...");
 
     let _id = u32::from(client.id());
-
-    for _ in 0..4096 {
-        let mut rng = prng::State::new();
+    let mut rng = prng::State::new();
+    for _ in 0..100 {
+        
         let request = {
             let i = rng.next_state();
             if i & 1 == 0 { Action::Sqrt } else { Action::MultiplyByTwo }
@@ -394,5 +394,23 @@ fn run_client(mut client: Client<CalcData>, _q: Arc<AsyncSender<String>>) {
             println!("state: {:?}", reply);
         }
      
+
     }
+    let mut buffer = String::new();
+    io::stdin().read_line(&mut buffer);
+    println!("buffer {}",&buffer);
+    
+    if !buffer.is_empty() {
+        let request = {
+            let i = rng.next_state();
+            if i & 1 == 0 { Action::Sqrt } else { Action::MultiplyByTwo }
+        };
+        println!("{:?} // Sending req {:?}...", client.id(), request);
+
+        if let Ok(reply) = rt::block_on(client.update::<Ordered>(Arc::from(request))) {
+            println!("state: {:?}", reply);
+        }
+    }
+
+
 }

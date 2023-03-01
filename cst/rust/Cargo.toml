@@ -36,11 +36,12 @@ features = [
     "socket_async_std_tcp",
     "channel_flume_mpmc",
     "channel_sync_crossbeam",
+    "serialize_serde",
     "channel_mixed_flume",
     "channel_mult_custom_dump",
     "crypto_signature_ring_ed25519",
     "crypto_hash_blake3_blake3",
-    "collections_randomstate_fxhash"
+    "collections_randomstate_fxhash",
 ]
 
 [build-dependencies.capnpc]

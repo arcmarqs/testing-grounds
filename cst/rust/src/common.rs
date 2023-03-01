@@ -14,7 +14,7 @@ use rustls_pemfile::{read_one, Item};
 use febft::bft::benchmarks::CommStats;
 
 use febft::bft::communication::{NodeConfig, NodeId, PeerAddr};
-use febft::bft::consensus::log::persistent::{NoPersistentLog};
+use febft::bft::msg_log::persistent::{NoPersistentLog};
 use febft::bft::core::client::{
     self,
     Client,
@@ -175,7 +175,7 @@ pub async fn setup_replica(
     addrs: IntMap<PeerAddr>,
     pk: IntMap<PublicKey>,
     comm_stats: Option<Arc<CommStats>>,
-) -> Result<Replica<CalcService, NoPersistentLog>> {
+) -> Result<Replica<CalcService>> {
     let node_id = id.clone();
 
     let (node, global_batch_size, global_batch_timeout) = {
@@ -198,7 +198,7 @@ pub async fn setup_replica(
         log_mode: Default::default(),
     };
 
-    Replica::bootstrap(conf).await
+    Replica::bootstrap::<NoPersistentLog>(conf).await
 }
 
 async fn get_batch_size() -> usize {
@@ -564,6 +564,7 @@ impl Service for CalcService {
             }
         
         self.1 += 1;
+        println!("STATE ON REPLICA {:?}",state);
         let reply = Arc::new(*state);
 
         reply
